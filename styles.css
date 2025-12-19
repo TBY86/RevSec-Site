@@ -167,148 +167,93 @@ body {
    =================================== */
 
 .heroSection {
-    padding: 6rem 0;
+    min-height: 100vh; /* Fill viewport height */
+    display: flex;
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
     text-align: center;
+    padding: 6rem 2rem 6rem 2rem; /* Combine top/bottom and side padding */
     background-color: #1a1a1a;
     color: #ffffff;
-}
-
-/* Hero content stacked vertically */
-.heroContent {
-    display: flex;
-    flex-direction: column; /* top content above bottom content */
-    align-items: center;
-    justify-content: center;
     position: relative;
 }
 
-/* Top (logo + tagline) */
+/* Hero content container */
+.heroContent {
+    display: flex;
+    flex-direction: column; /* Stack top and bottom */
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+    z-index: 2; /* Above background decorations */
+}
+
+/* Hero Top: Logo + Tagline */
 .heroTop {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
-/* Logo and tagline */
+/* Logo */
 .heroLogo .logoDisplay {
-    font-size: 3rem;
+    font-size: 5rem; /* Bigger logo */
     font-weight: 700;
-    color: #ffffff;
+    line-height: 1.1;
 }
 
+.heroLogo .logoRev {
+    color: #0066FF; /* R3 in blue */
+}
+
+.heroLogo .logoSec {
+    color: #ffffff; /* Security in white */
+}
+
+/* Tagline */
 .heroTagline {
     margin-top: 1rem;
     font-size: 1.25rem;
-    color: #cccccc;
+    color: #ffffff;
 }
 
-/* Horizontal line */
+/* Horizontal line under heroTop */
 .heroLine {
     width: 100%;
     height: 2px;
     background: linear-gradient(90deg, #0066FF, #4A90E2, #00D9A3);
     margin: 2rem 0;
-    transform: scaleX(0);      /* start collapsed */
-    transform-origin: center;  /* grow from center */
-    transition: none;          /* no transition initially */
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: none;
 }
 
-
-/* Bottom (buttons) */
+/* Hero Bottom: Buttons */
 .heroBottom {
+    display: flex;
+    justify-content: center;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Hero buttons */
-.heroActions {
-    display: flex;
-    flex-direction: column; /* stacked buttons */
-    align-items: center;
-    margin-top: 1.5rem;
-}
-
-.heroActions .btnPrimary,
-.heroActions .btnSecondary {
-    margin: 0.5rem 0;
-}
-
-.heroActions {
-    display: flex;
-    flex-direction: row;       /* Ensure buttons are side by side */
-    gap: 1rem;                 /* Space between buttons */
-    justify-content: center;   /* Center the buttons horizontally */
-    margin-top: 2rem;
-    flex-wrap: wrap;           /* Optional: wrap to next line on smaller screens */
-}
-
-/* Fullscreen Hero Section */
-.heroSection {
-    min-height: 100vh; /* Make hero fill the viewport height */
-    display: flex;
-    align-items: center; /* Vertically center content */
-    justify-content: center; /* Horizontally center content */
-    text-align: center;
-    padding: 0 2rem; /* Optional side padding */
-    position: relative;
-}
-
-/* Ensure hero content stays centered */
-.heroContent {
-    max-width: 800px; /* Keeps content from stretching too wide */
-    margin: 0 auto;
-    z-index: 2; /* Above any background decorations */
-}
-
-/* Hero Logo */
-.heroLogo .logoDisplay {
-    font-size: 5rem; /* Make the R3Security logo bigger */
-    font-weight: 700;
-    line-height: 1.1;
-}
-
-.heroLogo .logoSec {
-    color: #ffffff; /* Keep "Security" white */
-}
-
-/* Hero Tagline */
-.heroTagline {
-    font-size: 1.25rem; /* Keep the same size as before */
-    margin-top: 1rem;
-    color: #ffffff;
-}
-
-/* Hero Buttons Container */
-.heroActions {
-    display: flex;
-    gap: 2rem; /* Add more space between buttons */
-    justify-content: center;
-    margin-top: 2rem;
 }
 
 /* Hero Buttons */
+.heroActions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Wrap on small screens */
+    gap: 2rem; /* Space between buttons */
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 .heroActions .btnPrimary,
 .heroActions .btnSecondary {
-    font-size: 0.95rem; /* Slightly smaller buttons */
-    padding: 0.85rem 1.8rem; /* Slightly reduced padding */
+    font-size: 0.95rem;
+    padding: 0.85rem 1.8rem;
+    margin: 0.5rem 0; /* spacing for stacked wrap */
 }
-
-
-
-/* Logo Colors */
-.logoRev {
-    color: #0066FF; /* Bright blue for R3 */
-}
-
-.logoSec {
-    color: #ffffff; /* Lighter blue for Security */
-}
-
 
 /* ===================================
    Buttons
