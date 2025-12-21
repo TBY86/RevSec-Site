@@ -79,9 +79,9 @@ if (heroLine && heroTop && heroBottom) {
    ============================= */
 if (heroLine) {
     let shimmerPos = 0;
-    let pulseDirection = 1;
-    let pulseOpacity = 0.6;
-    let glowPosition = 150;
+    let glowPosition = 100; // CHANGED: Position of the glow segment (100 = right edge)
+    let glowWidth = 0; // CHANGED: Width of the green glow segment (starts at 0)
+    let glowPhase = 'growing'; // ADDED: Track phase: 'growing', 'traveling', 'shrinking'
     let isLineGrowing = true;
     let glowIntensity = 1;
     
@@ -94,30 +94,44 @@ if (heroLine) {
         if (shimmerPos > 100) shimmerPos = 0;
         heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
         
-        glowPosition -= 0.5;
-        if (glowPosition < -150) glowPosition = 150;
-        
-        pulseOpacity += 0.008 * pulseDirection;
-        if (pulseOpacity >= 0.9) pulseDirection = -1;
-        if (pulseOpacity <= 0.5) pulseDirection = 1;
-        
-        let edgeFade = 1;
-        if (glowPosition > 100) {
-            edgeFade = Math.max(0, (150 - glowPosition) / 50);
-        } else if (glowPosition < 0) {
-            edgeFade = Math.max(0, (glowPosition + 150) / 150);
+        // CHANGED: Three-phase LED strip effect
+        if (glowPhase === 'growing') {
+            // Phase 1: Grow on the right side
+            glowWidth += 0.3;
+            if (glowWidth >= 15) {
+                glowWidth = 15;
+                glowPhase = 'traveling'; // Start traveling once fully grown
+            }
+        } else if (glowPhase === 'traveling') {
+            // Phase 2: Travel left at full width
+            glowPosition -= 0.3;
+            if (glowPosition <= 0) {
+                glowPhase = 'shrinking'; // Start shrinking when reaching left edge
+            }
+        } else if (glowPhase === 'shrinking') {
+            // Phase 3: Shrink on the left side
+            glowPosition -= 0.3; // Continue moving left
+            glowWidth -= 0.3; // Shrink as it disappears
+            if (glowWidth <= 0) {
+                glowWidth = 0;
+                glowPosition = 100; // Reset to right edge
+                glowPhase = 'growing'; // Start growing again
+            }
         }
         
+        // CHANGED: Reduce intensity after line finishes growing
         if (!isLineGrowing) {
             glowIntensity -= 0.01;
             if (glowIntensity < 0.1) glowIntensity = 0.1;
         }
         
+        // CHANGED: Glow size and opacity based on segment width
+        let segmentOpacity = (glowWidth / 15) * glowIntensity;
+        
         heroLine.style.boxShadow = `
-           0 0 ${40 * glowIntensity}px ${20 * glowIntensity}px rgba(0, 217, 163, ${pulseOpacity * edgeFade * glowIntensity}),
-            0 0 ${60 * glowIntensity}px ${30 * glowIntensity}px rgba(0, 102, 255, ${pulseOpacity * 0.6 * edgeFade * glowIntensity}),
-            0 0 ${80 * glowIntensity}px ${40 * glowIntensity}px rgba(0, 217, 163, ${pulseOpacity * 0.4 * edgeFade * glowIntensity}),
-            0 0 ${100 * glowIntensity}px ${50 * glowIntensity}px rgba(0, 102, 255, ${pulseOpacity * 0.3 * edgeFade * glowIntensity})
+           0 0 ${20 + (glowWidth * 2)}px ${10 + glowWidth}px rgba(0, 217, 163, ${segmentOpacity * 0.8}),
+            0 0 ${30 + (glowWidth * 3)}px ${15 + (glowWidth * 1.5)}px rgba(0, 102, 255, ${segmentOpacity * 0.5}),
+            0 0 ${40 + (glowWidth * 4)}px ${20 + (glowWidth * 2)}px rgba(0, 217, 163, ${segmentOpacity * 0.3})
         `;
         
         requestAnimationFrame(animateHeroLine);
@@ -237,3 +251,4 @@ if (contactBtn && heroSection) {
     });
 
 });
+
