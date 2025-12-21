@@ -99,7 +99,15 @@ if (heroLine) {
         if (pulseOpacity >= 0.9) pulseDirection = -1;
         if (pulseOpacity <= 0.5) pulseDirection = 1;
 
-        heroLine.style.boxShadow = `0 0 10px rgba(0, 217, 163, ${pulseOpacity})`;
+        // Create INTENSE traveling glow effect from right to left
+        // Multiple large shadows at different positions create strong "traveling" effect
+        heroLine.style.boxShadow = `
+            ${glowPosition}% 0 40px 20px rgba(0, 217, 163, ${pulseOpacity}),
+            ${glowPosition - 10}% 0 30px 15px rgba(0, 217, 163, ${pulseOpacity * 0.8}),
+            ${glowPosition + 10}% 0 30px 15px rgba(0, 217, 163, ${pulseOpacity * 0.8}),
+            ${glowPosition}% 0 60px 30px rgba(0, 102, 255, ${pulseOpacity * 0.6}),
+            0 0 15px rgba(0, 217, 163, ${pulseOpacity * 0.4})
+        `;
 
         requestAnimationFrame(animateHeroLine);
     }
@@ -220,6 +228,7 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
 
