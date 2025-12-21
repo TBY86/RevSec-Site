@@ -36,13 +36,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 /* =============================
+   Hero Section Entrance Animation
+   ============================= */
+// ADDED: Define variables at the top
+const heroLine = document.querySelector('.heroLine');
+const heroTop = document.querySelector('.heroTop');
+const heroBottom = document.querySelector('.heroActions');
+
+if (heroLine && heroTop && heroBottom) {
+    // ADDED: Set initial hidden states
+    heroLine.style.transform = 'scaleX(0)';
+    heroLine.style.transformOrigin = 'center';
+    heroLine.style.transition = 'transform 1s ease-out';
+
+    heroTop.style.opacity = 0;
+    heroTop.style.transform = 'translateY(-50px)';
+    
+    heroBottom.style.opacity = 0;
+    heroBottom.style.transform = 'translateY(50px)';
+
+    // ADDED: Trigger line animation after delay
+    setTimeout(() => {
+        heroLine.style.transform = 'scaleX(1)';
+    }, 2000);
+
+    // ADDED: Wait for line to finish, then animate content
+    heroLine.addEventListener('transitionend', () => {
+        heroTop.style.transition = 'all 0.8s ease-out';
+        heroTop.style.opacity = 1;
+        heroTop.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+            heroBottom.style.transition = 'all 0.8s ease-out';
+            heroBottom.style.opacity = 1;
+            heroBottom.style.transform = 'translateY(0)';
+        }, 200);
+    });
+}
+
+/* =============================
    Hero Line Shimmer & Pulse (JS)
    ============================= */
 if (heroLine) {
     let shimmerPos = 0;
     let pulseDirection = 1;
     let pulseOpacity = 0.6;
-    let glowPosition = 150; // CHANGED: Start offscreen right
+    let glowPosition = 150;
     let isLineGrowing = true;
     let glowIntensity = 1;
     
@@ -55,27 +94,23 @@ if (heroLine) {
         if (shimmerPos > 100) shimmerPos = 0;
         heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
         
-        // CHANGED: Move glow continuously from right to left
         glowPosition -= 0.5;
-        if (glowPosition < -150) glowPosition = 150; // CHANGED: Reset when completely offscreen left
+        if (glowPosition < -150) glowPosition = 150;
         
         pulseOpacity += 0.008 * pulseDirection;
         if (pulseOpacity >= 0.9) pulseDirection = -1;
         if (pulseOpacity <= 0.5) pulseDirection = 1;
         
-        // CHANGED: Smooth fade at edges for snake-like wraparound
         let edgeFade = 1;
         if (glowPosition > 100) {
-            // CHANGED: Fade out smoothly as it exits right side
             edgeFade = Math.max(0, (150 - glowPosition) / 50);
         } else if (glowPosition < 0) {
-            // CHANGED: Fade in smoothly as it enters from left side
             edgeFade = Math.max(0, (glowPosition + 150) / 150);
         }
         
         if (!isLineGrowing) {
             glowIntensity -= 0.01;
-            if (glowIntensity < 0.1) glowIntensity = 0.1; // CHANGED: Back to 0.1 for minimal glow
+            if (glowIntensity < 0.1) glowIntensity = 0.1;
         }
         
         heroLine.style.boxShadow = `
@@ -98,9 +133,9 @@ const contactBtn = document.getElementById('contactBtn');
 const heroSection = document.getElementById('hero');
 
 if (contactBtn && heroSection) {
-    let targetOpacity = 0;  // start hidden
-    let currentOpacity = 0; // start hidden
-    const fadeSpeed = 0.02; // smaller = slower fade
+    let targetOpacity = 0;
+    let currentOpacity = 0;
+    const fadeSpeed = 0.02;
 
     contactBtn.style.opacity = '0';
     contactBtn.style.pointerEvents = 'none';
@@ -115,14 +150,12 @@ if (contactBtn && heroSection) {
 
     function checkHeroVisibility() {
         const heroBottom = heroSection.getBoundingClientRect().bottom;
-        // Only fade in if hero is completely scrolled out
         targetOpacity = heroBottom <= 0 ? 1 : 0;
     }
 
     updateOpacity();
     window.addEventListener('scroll', checkHeroVisibility);
     window.addEventListener('resize', checkHeroVisibility);
-    // Initial check on load
     checkHeroVisibility();
 }
 
@@ -204,11 +237,3 @@ if (contactBtn && heroSection) {
     });
 
 });
-
-
-
-
-
-
-
-
