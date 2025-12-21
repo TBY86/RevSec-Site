@@ -262,6 +262,30 @@ body {
 }
 .btnSubmit:hover { background: var(--color-trust-blue-dark); }
 
+/* Gumroad Button Styling */
+a.gumroad-button {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--color-trust-blue), var(--color-trust-blue-light), var(--color-accent-green));
+    color: var(--color-white) !important;
+    background-size: 300% 300%;
+    animation: gradientShift 3s ease infinite;
+    border: none;
+    box-shadow: 0 4px 16px rgba(0,102,255,0.3);
+    width: 100%;
+}
+
+a.gumroad-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,102,255,0.5);
+}
+
 /* ===================================
    Sections
    =================================== */
@@ -376,4 +400,5 @@ body {
 }
 .contactIcon { width:24px; height:24px; }
 .contactText { font-weight: var(--font-weight-semibold); }
+
 
