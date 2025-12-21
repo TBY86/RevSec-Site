@@ -46,7 +46,7 @@ if (heroLine && heroTop && heroBottom) {
     // Initial states
     heroLine.style.transform = 'scaleX(0)';
     heroLine.style.transformOrigin = 'center';
-    heroLine.style.transition = 'transform 1s ease-out';
+    heroLine.style.transition = 'transform 1.5s ease-out';
 
     heroTop.style.opacity = 0;
     heroTop.style.transform = 'translateY(-50px)';
@@ -56,7 +56,7 @@ if (heroLine && heroTop && heroBottom) {
     // Trigger line animation after slight delay for page load
     setTimeout(() => {
         heroLine.style.transform = 'scaleX(1)';
-    }, 100);
+    }, 500);
 
     // Animate top and bottom after line finishes
     heroLine.addEventListener('transitionend', () => {
@@ -215,3 +215,4 @@ if (contactBtn && heroSection) {
     });
 
 });
+
