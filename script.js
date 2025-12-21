@@ -79,47 +79,45 @@ if (heroLine && heroTop && heroBottom) {
    ============================= */
 if (heroLine) {
     let shimmerPos = 0;
-    let glowPosition = 120; // Start offscreen right
+    let glowPosition = 119; // CHANGED: Start 19 units off right
     let isLineGrowing = true;
-    let hasFinishedGrowing = false; // ADDED: Track if animation is complete
+    let hasFinishedGrowing = false;
     
     heroLine.addEventListener('transitionend', () => {
         isLineGrowing = false;
-        // ADDED: Stop glow animation after a short delay
         setTimeout(() => {
             hasFinishedGrowing = true;
-        }, 3000); // Let glow complete one full cycle after line draws
+        }, 3000);
     });
     
     function animateHeroLine() {
-        // ADDED: Stop animation completely after line finishes
         if (hasFinishedGrowing) {
-            heroLine.style.boxShadow = 'none'; // Remove all glow
-            return; // Stop the animation loop
+            heroLine.style.boxShadow = 'none';
+            return;
         }
         
-        // Background shimmer
         shimmerPos += 0.5;
         if (shimmerPos > 100) shimmerPos = 0;
         heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
         
-        // CHANGED: Move glow from right to left continuously (no reset)
+        // Move glow from right to left
         glowPosition -= 0.4;
         
-        // Calculate glow visibility (fade in from right, fade out on left)
+        // CHANGED: Reset when 25 units off left (completely invisible)
+        if (glowPosition < -25) {
+            glowPosition = 119; // Reset to 19 units off right
+        }
+        
+        // Calculate glow visibility
         let glowOpacity = 1;
         
-        // Fade in on right side (growing effect)
+        // Fade in on right side
         if (glowPosition > 100) {
-            glowOpacity = 1 - ((glowPosition - 100) / 20);
+            glowOpacity = 1 - ((glowPosition - 100) / 19); // CHANGED: Fade over 19 units
         }
-        // Fade out on left side (shrinking effect)
+        // Fade out on left side
         else if (glowPosition < 0) {
-            glowOpacity = 1 - (Math.abs(glowPosition) / 20);
-        }
-        // ADDED: Completely hide once far offscreen
-        else if (glowPosition < -20) {
-            glowOpacity = 0;
+            glowOpacity = 1 - (Math.abs(glowPosition) / 25); // CHANGED: Fade over 25 units
         }
         
         // Apply glow only during line growth
@@ -130,7 +128,6 @@ if (heroLine) {
                 0 0 70px 35px rgba(0, 217, 163, ${glowOpacity * 0.3})
             `;
         } else {
-            // CHANGED: No glow after line finishes growing
             heroLine.style.boxShadow = 'none';
         }
         
@@ -251,6 +248,7 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
 
