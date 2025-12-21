@@ -86,23 +86,25 @@ if (heroLine) {
     heroLine.addEventListener('transitionend', () => {
         isLineGrowing = false;
         showTravelingGlow = true;
+        heroLine.style.boxShadow = 'none'; // ADDED: Clear glow when line finishes
     });
     
     function animateHeroLine() {
-        // CHANGED: Only animate shimmer DURING line growth
+        // PHASE 1: ONLY during line growth
         if (isLineGrowing) {
             shimmerPos += 0.5;
             if (shimmerPos > 100) shimmerPos = 0;
             heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
             
-            // Full glow during line growth
             heroLine.style.boxShadow = `
                 0 0 30px 15px rgba(0, 217, 163, 0.8),
                 0 0 50px 25px rgba(0, 102, 255, 0.5),
                 0 0 70px 35px rgba(0, 217, 163, 0.3)
             `;
+            
+            requestAnimationFrame(animateHeroLine); // CHANGED: Only continue if line is growing
         }
-        // After line growth - only traveling green glow
+        // PHASE 2: After line growth - traveling glow
         else if (showTravelingGlow) {
             glowPosition -= 0.4;
             
@@ -123,9 +125,9 @@ if (heroLine) {
                 0 0 50px 25px rgba(0, 102, 255, ${glowOpacity * 0.5}),
                 0 0 70px 35px rgba(0, 217, 163, ${glowOpacity * 0.3})
             `;
+            
+            requestAnimationFrame(animateHeroLine); // Continue for traveling glow
         }
-        
-        requestAnimationFrame(animateHeroLine);
     }
     
     animateHeroLine();
@@ -242,6 +244,7 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
 
