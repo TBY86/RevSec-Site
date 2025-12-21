@@ -80,19 +80,24 @@ if (heroLine && heroTop && heroBottom) {
 if (heroLine) {
     let shimmerPos = 0;
     let pulseDirection = 1;
-    let pulseOpacity = 0.3; // starting glow intensity
+    let pulseOpacity = 0.6; // starting glow intensity
+    let glowPosition = 100
 
     // Animate shimmer horizontally
     function animateHeroLine() {
         // Update background position for shimmer
-        shimmerPos += 0.2; // slower than button (smaller increment)
+        shimmerPos += 0.5; // slower than button (smaller increment)
         if (shimmerPos > 100) shimmerPos = 0;
         heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
 
+        // Move the glow from right to left
+        glowPosition -= 0.5; // Speed of glow movement (negative = left direction)
+        if (glowPosition < -20) glowPosition = 100; // Reset to right when it reaches left edge
+
         // Pulse glow subtly
-        pulseOpacity += 0.002 * pulseDirection; // very slow pulse
-        if (pulseOpacity >= 0.35) pulseDirection = -1;
-        if (pulseOpacity <= 0.25) pulseDirection = 1;
+        pulseOpacity += 0.008 * pulseDirection; // very slow pulse
+        if (pulseOpacity >= 0.9) pulseDirection = -1;
+        if (pulseOpacity <= 0.5) pulseDirection = 1;
 
         heroLine.style.boxShadow = `0 0 10px rgba(0, 217, 163, ${pulseOpacity})`;
 
@@ -215,5 +220,6 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
