@@ -81,7 +81,7 @@ if (heroLine) {
     let shimmerPos = 0;
     let pulseDirection = 1;
     let pulseOpacity = 0.6; // starting glow intensity
-    let glowPosition = 100
+    let glowPosition = 150
 
     // Animate shimmer horizontally
     function animateHeroLine() {
@@ -92,21 +92,27 @@ if (heroLine) {
 
         // Move the glow from right to left
         glowPosition -= 0.5; // Speed of glow movement (negative = left direction)
-        if (glowPosition < -20) glowPosition = 100; // Reset to right when it reaches left edge
+        if (glowPosition < -50) glowPosition = 150; // Reset to right when it reaches left edge
 
         // Pulse glow subtly
         pulseOpacity += 0.008 * pulseDirection; // very slow pulse
         if (pulseOpacity >= 0.9) pulseDirection = -1;
         if (pulseOpacity <= 0.5) pulseDirection = 1;
 
+        let edgeFade = 1;
+        if (glowPosition > 100) {
+            edgeFade = Math.max(0, (150 - glowPosition) / 50);
+        } else if (glowPosition < 0) {
+            edgeFade = Math.max(0, (glowPosition + 50) / 50);
+        }
+
         // Create INTENSE traveling glow effect from right to left
         // Multiple large shadows at different positions create strong "traveling" effect
         heroLine.style.boxShadow = `
-            ${glowPosition}% 0 40px 20px rgba(0, 217, 163, ${pulseOpacity}),
-            ${glowPosition - 10}% 0 30px 15px rgba(0, 217, 163, ${pulseOpacity * 0.8}),
-            ${glowPosition + 10}% 0 30px 15px rgba(0, 217, 163, ${pulseOpacity * 0.8}),
-            ${glowPosition}% 0 60px 30px rgba(0, 102, 255, ${pulseOpacity * 0.6}),
-            0 0 15px rgba(0, 217, 163, ${pulseOpacity * 0.4})
+           0 0 40px 20px rgba(0, 217, 163, ${pulseOpacity * edgeFade}),
+            0 0 60px 30px rgba(0, 102, 255, ${pulseOpacity * 0.6 * edgeFade}),
+            0 0 80px 40px rgba(0, 217, 163, ${pulseOpacity * 0.4 * edgeFade}),
+            0 0 100px 50px rgba(0, 102, 255, ${pulseOpacity * 0.3 * edgeFade})
         `;
 
         requestAnimationFrame(animateHeroLine);
@@ -228,6 +234,7 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
 
