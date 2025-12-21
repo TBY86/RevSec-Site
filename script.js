@@ -35,37 +35,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* =============================
+/* =============================
    Hero Section Entrance Animation
    ============================= */
 const heroLine = document.querySelector('.heroLine');
-const heroTop = document.querySelector('.heroTop'); // matches HTML
-const heroBottom = document.querySelector('.heroActions'); // matches HTML
+const heroTop = document.querySelector('.heroTop');
+const heroBottom = document.querySelector('.heroActions');
 
 if (heroLine && heroTop && heroBottom) {
-    // Initial states
+    // ===== STEP 1: SET INITIAL HIDDEN STATES =====
     heroLine.style.transform = 'scaleX(0)';
     heroLine.style.transformOrigin = 'center';
-    heroLine.style.transition = 'transform 2.5s ease-out';
+    heroLine.style.transition = 'transform 1s ease-out';
 
     heroTop.style.opacity = 0;
     heroTop.style.transform = 'translateY(-50px)';
+    
     heroBottom.style.opacity = 0;
     heroBottom.style.transform = 'translateY(50px)';
 
-    // Trigger line animation after slight delay for page load
+    // ===== STEP 2: TRIGGER LINE ANIMATION AFTER DELAY =====
     setTimeout(() => {
         heroLine.style.transform = 'scaleX(1)';
-    }, 800);
+    }, 2000); // CHANGED: Updated delay value
 
-    // Animate top and bottom after line finishes
+    // ===== STEP 3: WAIT FOR LINE TO FINISH, THEN ANIMATE CONTENT =====
     heroLine.addEventListener('transitionend', () => {
-        // Top content animation
         heroTop.style.transition = 'all 0.8s ease-out';
         heroTop.style.opacity = 1;
         heroTop.style.transform = 'translateY(0)';
 
-        // Bottom content animation slightly after top
         setTimeout(() => {
             heroBottom.style.transition = 'all 0.8s ease-out';
             heroBottom.style.opacity = 1;
@@ -80,44 +79,52 @@ if (heroLine && heroTop && heroBottom) {
 if (heroLine) {
     let shimmerPos = 0;
     let pulseDirection = 1;
-    let pulseOpacity = 0.6; // starting glow intensity
-    let glowPosition = 150
-
-    // Animate shimmer horizontally
+    let pulseOpacity = 0.6;
+    let glowPosition = 150;
+    let isLineGrowing = true; // ADDED: Track if line is still growing
+    let glowIntensity = 1; // ADDED: Multiplier for glow intensity
+    
+    // ADDED: Listen for when line finishes growing
+    heroLine.addEventListener('transitionend', () => {
+        isLineGrowing = false;
+    });
+    
     function animateHeroLine() {
-        // Update background position for shimmer
-        shimmerPos += 0.5; // slower than button (smaller increment)
+        shimmerPos += 0.5;
         if (shimmerPos > 100) shimmerPos = 0;
         heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
-
-        // Move the glow from right to left
-        glowPosition -= 0.5; // Speed of glow movement (negative = left direction)
-        if (glowPosition < -50) glowPosition = 150; // Reset to right when it reaches left edge
-
-        // Pulse glow subtly
-        pulseOpacity += 0.008 * pulseDirection; // very slow pulse
+        
+        glowPosition -= 0.5;
+        if (glowPosition < -50) glowPosition = 150;
+        
+        pulseOpacity += 0.008 * pulseDirection;
         if (pulseOpacity >= 0.9) pulseDirection = -1;
         if (pulseOpacity <= 0.5) pulseDirection = 1;
-
+        
         let edgeFade = 1;
         if (glowPosition > 100) {
             edgeFade = Math.max(0, (150 - glowPosition) / 50);
         } else if (glowPosition < 0) {
             edgeFade = Math.max(0, (glowPosition + 50) / 50);
         }
-
-        // Create INTENSE traveling glow effect from right to left
-        // Multiple large shadows at different positions create strong "traveling" effect
+        
+        // ADDED: Reduce glow intensity after line finishes growing
+        if (!isLineGrowing) {
+            glowIntensity -= 0.01; // Gradually reduce
+            if (glowIntensity < 0.1) glowIntensity = 0.1; // Keep minimal glow
+        }
+        
+        // CHANGED: Multiply by glowIntensity to reduce glow after animation
         heroLine.style.boxShadow = `
-           0 0 40px 20px rgba(0, 217, 163, ${pulseOpacity * edgeFade}),
-            0 0 60px 30px rgba(0, 102, 255, ${pulseOpacity * 0.6 * edgeFade}),
-            0 0 80px 40px rgba(0, 217, 163, ${pulseOpacity * 0.4 * edgeFade}),
-            0 0 100px 50px rgba(0, 102, 255, ${pulseOpacity * 0.3 * edgeFade})
+           0 0 ${40 * glowIntensity}px ${20 * glowIntensity}px rgba(0, 217, 163, ${pulseOpacity * edgeFade * glowIntensity}),
+            0 0 ${60 * glowIntensity}px ${30 * glowIntensity}px rgba(0, 102, 255, ${pulseOpacity * 0.6 * edgeFade * glowIntensity}),
+            0 0 ${80 * glowIntensity}px ${40 * glowIntensity}px rgba(0, 217, 163, ${pulseOpacity * 0.4 * edgeFade * glowIntensity}),
+            0 0 ${100 * glowIntensity}px ${50 * glowIntensity}px rgba(0, 102, 255, ${pulseOpacity * 0.3 * edgeFade * glowIntensity})
         `;
-
+        
         requestAnimationFrame(animateHeroLine);
     }
-
+    
     animateHeroLine();
 }
 
@@ -234,6 +241,7 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
 
