@@ -79,40 +79,37 @@ if (heroLine && heroTop && heroBottom) {
    ============================= */
 if (heroLine) {
     let shimmerPos = 0;
-    let glowPosition = 119; // Start 19 units off right
+    let glowPosition = 119;
     let isLineGrowing = true;
-    let showTravelingGlow = false; // ADDED: Control when traveling glow appears
-    let glowIntensity = 1; // For initial glow during line growth
+    let showTravelingGlow = false;
     
     heroLine.addEventListener('transitionend', () => {
         isLineGrowing = false;
-        showTravelingGlow = true; // ADDED: Start traveling glow after line finishes
+        showTravelingGlow = true;
     });
     
     function animateHeroLine() {
-        shimmerPos += 0.5;
-        if (shimmerPos > 100) shimmerPos = 0;
-        heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
-        
-        // PHASE 1: During line growth - show full glow around entire line
+        // CHANGED: Only animate shimmer DURING line growth
         if (isLineGrowing) {
+            shimmerPos += 0.5;
+            if (shimmerPos > 100) shimmerPos = 0;
+            heroLine.style.backgroundPosition = `${shimmerPos}% 50%`;
+            
+            // Full glow during line growth
             heroLine.style.boxShadow = `
                 0 0 30px 15px rgba(0, 217, 163, 0.8),
                 0 0 50px 25px rgba(0, 102, 255, 0.5),
                 0 0 70px 35px rgba(0, 217, 163, 0.3)
             `;
         }
-        // PHASE 2: After line growth - show traveling green glow
+        // After line growth - only traveling green glow
         else if (showTravelingGlow) {
-            // Move glow from right to left
             glowPosition -= 0.4;
             
-            // Reset when off left side
             if (glowPosition < -25) {
                 glowPosition = 119;
             }
             
-            // Calculate glow visibility (fade in/out at edges)
             let glowOpacity = 1;
             
             if (glowPosition > 100) {
@@ -245,6 +242,7 @@ if (contactBtn && heroSection) {
     });
 
 });
+
 
 
 
