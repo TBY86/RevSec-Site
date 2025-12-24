@@ -245,6 +245,12 @@ if (contactBtn && heroSection) {
     const contactModal = document.getElementById('contactModal');
     const careerModalTitle = document.getElementById('careerModalTitle');
 
+    console.log('Modals found:', {
+        careerModal: !!careerModal,
+        contactModal: !!contactModal,
+        careerModalTitle: !!careerModalTitle
+    });
+
     // Check if modals exist before setting up functionality
     if (careerModal && contactModal && careerModalTitle) {
         
@@ -260,6 +266,7 @@ if (contactBtn && heroSection) {
                 }
                 careerModal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
+                console.log('Career modal opened');
             });
         });
 
@@ -268,18 +275,31 @@ if (contactBtn && heroSection) {
             e.preventDefault();
             contactModal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            console.log('Contact modal opened');
         };
 
         const heroCta = document.getElementById('heroCta');
-        const contactBtn = document.getElementById('contactBtn');
+        const stickyContactBtn = document.getElementById('contactBtn');
         
-        if (heroCta) heroCta.addEventListener('click', openContactModal);
-        if (contactBtn) contactBtn.addEventListener('click', openContactModal);
+        console.log('Buttons found:', {
+            heroCta: !!heroCta,
+            stickyContactBtn: !!stickyContactBtn
+        });
+        
+        if (heroCta) {
+            heroCta.addEventListener('click', openContactModal);
+            console.log('Hero CTA listener added');
+        }
+        if (stickyContactBtn) {
+            stickyContactBtn.addEventListener('click', openContactModal);
+            console.log('Sticky button listener added');
+        }
 
         // Close modals
         const closeModal = (modal) => {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
+            console.log('Modal closed');
         };
 
         const careerModalClose = document.getElementById('careerModalClose');
@@ -287,10 +307,41 @@ if (contactBtn && heroSection) {
         const contactModalClose = document.getElementById('contactModalClose');
         const contactModalOverlay = document.getElementById('contactModalOverlay');
 
-        if (careerModalClose) careerModalClose.addEventListener('click', () => closeModal(careerModal));
-        if (careerModalOverlay) careerModalOverlay.addEventListener('click', () => closeModal(careerModal));
-        if (contactModalClose) contactModalClose.addEventListener('click', () => closeModal(contactModal));
-        if (contactModalOverlay) contactModalOverlay.addEventListener('click', () => closeModal(contactModal));
+        console.log('Close buttons found:', {
+            careerModalClose: !!careerModalClose,
+            careerModalOverlay: !!careerModalOverlay,
+            contactModalClose: !!contactModalClose,
+            contactModalOverlay: !!contactModalOverlay
+        });
+
+        if (careerModalClose) {
+            careerModalClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal(careerModal);
+                console.log('Career modal close button clicked');
+            });
+        }
+        if (careerModalOverlay) {
+            careerModalOverlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal(careerModal);
+                console.log('Career modal overlay clicked');
+            });
+        }
+        if (contactModalClose) {
+            contactModalClose.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal(contactModal);
+                console.log('Contact modal close button clicked');
+            });
+        }
+        if (contactModalOverlay) {
+            contactModalOverlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal(contactModal);
+                console.log('Contact modal overlay clicked');
+            });
+        }
 
         // Form submissions
         const careerForm = document.getElementById('careerForm');
@@ -318,6 +369,7 @@ if (contactBtn && heroSection) {
     }
 
 });
+
 
 
 
