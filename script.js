@@ -274,7 +274,7 @@ if (contactBtn && heroSection) {
         const contactBtn = document.getElementById('contactBtn');
         
         if (heroCta) heroCta.addEventListener('click', openContactModal);
-        if (contactBtnElement) contactBtnElement.addEventListener('click', openContactModal);
+        if (contactBtn) contactBtn.addEventListener('click', openContactModal);
 
         // Close modals
         const closeModal = (modal) => {
@@ -318,6 +318,7 @@ if (contactBtn && heroSection) {
     }
 
 });
+
 
 
 
