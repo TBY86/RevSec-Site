@@ -238,7 +238,64 @@ if (contactBtn && heroSection) {
         });
     });
 
+    /* =============================
+       Modal Functionality
+       ============================= */
+    const careerModal = document.getElementById('careerModal');
+    const contactModal = document.getElementById('contactModal');
+    const careerModalTitle = document.getElementById('careerModalTitle');
+
+    // Open career modal
+    document.querySelectorAll('.btnCareer').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const careerType = e.target.dataset.careerType;
+            if (careerType === 'employment') {
+                careerModalTitle.textContent = 'Submit Your Resume';
+            } else {
+                careerModalTitle.textContent = 'Apply as Volunteer';
+            }
+            careerModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // Open contact modal
+    const openContactModal = () => {
+        contactModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
+
+    document.getElementById('heroCta')?.addEventListener('click', openContactModal);
+    document.getElementById('contactBtn')?.addEventListener('click', openContactModal);
+
+    // Close modals
+    const closeModal = (modal) => {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    document.getElementById('careerModalClose')?.addEventListener('click', () => closeModal(careerModal));
+    document.getElementById('careerModalOverlay')?.addEventListener('click', () => closeModal(careerModal));
+    document.getElementById('contactModalClose')?.addEventListener('click', () => closeModal(contactModal));
+    document.getElementById('contactModalOverlay')?.addEventListener('click', () => closeModal(contactModal));
+
+    // Form submissions
+    document.getElementById('careerForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thank you for your application! We will review it and get back to you soon.');
+        closeModal(careerModal);
+        e.target.reset();
+    });
+
+    document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thank you for your request! Our team will contact you within 24-48 hours.');
+        closeModal(contactModal);
+        e.target.reset();
+    });
+
 });
+
 
 
 
