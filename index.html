@@ -368,7 +368,7 @@
                 <h3 class="modalTitle" id="careerModalTitle">Submit Your Application</h3>
                 <button class="modalClose" id="careerModalClose">&times;</button>
             </div>
-            <form class="form" id="careerForm">
+            <form class="form" id="careerForm" name="career-application" netlify>
                 <div class="formGroup">
                     <label for="careerName" class="formLabel">Full Name *</label>
                     <input type="text" id="careerName" name="name" class="formInput" required>
@@ -402,7 +402,8 @@
                 <h3 class="modalTitle">Request Penetration Test</h3>
                 <button class="modalClose" id="contactModalClose">&times;</button>
             </div>
-            <form class="form" id="contactForm">
+            <form class="form" id="contactForm" name="pentest-request" netlify>
+                <input type="hidden" name="form-name" value="career-application" />
                 <div class="formGroup">
                     <label for="contactName" class="formLabel">Full Name *</label>
                     <input type="text" id="contactName" name="name" class="formInput" required>
@@ -446,6 +447,7 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
